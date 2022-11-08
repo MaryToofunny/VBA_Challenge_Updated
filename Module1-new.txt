@@ -1,0 +1,103 @@
+Sub Multiple_yearStock()
+
+
+Dim TickerName As String
+Dim yearlyChange As Double
+Dim percentChange As Double
+Dim TotalS As Double
+Dim T As Double
+
+
+Dim NewTableRow As Integer
+Dim lastrow As Double
+
+T = 250
+
+For Each ws In Worksheets
+
+NewTableRow = 2
+TotalS = 0
+
+
+'Define headers and setting format for new Table
+
+ws.Range("I1").Value = "Ticker"
+ws.Range("J1").Value = "YearlyChange"
+ws.Range("K1").Value = "PercentChange"
+ws.Range("L1").Value = "TotalStockVolume"
+
+ws.Range("I1").Columns.AutoFit
+ws.Range("J1").Columns.AutoFit
+ws.Range("K1").Columns.AutoFit
+ws.Range("L1").Columns.AutoFit
+
+'verifying last row of the previous table
+
+lastrow = ws.Cells(Rows.Count, 1).End(xlUp).Row
+
+
+For i = 2 To lastrow
+
+    If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
+    
+    'verifying Ticker
+    
+    TickerName = ws.Cells(i, 1).Value
+    ws.Range("I" & NewTableRow).Value = TickerName
+    
+
+    'verifying Total
+    
+    TotalS = TotalS + ws.Cells(i, 7).Value
+    ws.Range("L" & NewTableRow).Value = TotalS
+    
+     'verifying Yearly Change
+     
+    
+    yearlyChange = ws.Cells(i, 6).Value - ws.Cells((i - T), 3).Value
+    ws.Range("J" & NewTableRow).Value = yearlyChange
+     
+     'verifying percentage change
+     percentChange = yearlyChange / ws.Cells((i - T), 3).Value
+     
+     
+     ws.Range("K" & NewTableRow).Value = percentChange
+     ws.Range("K" & NewTableRow).NumberFormat = "0.00%"
+   
+         
+    'Color Coding of Yearly Change
+    
+    If ws.Cells(NewTableRow, 10).Value >= 0 Then
+
+    ws.Cells(NewTableRow, 10).Interior.ColorIndex = 4
+    Else
+    ws.Cells(NewTableRow, 10).Interior.ColorIndex = 3
+
+    End If
+    
+    
+    NewTableRow = NewTableRow + 1
+   
+    
+    TotalS = 0
+Else
+
+    
+    'calculating totalStock Volume
+    TotalS = TotalS + ws.Cells(i, 7).Value
+
+    
+    
+    
+End If
+
+Next i
+
+ T = T + 1
+
+Next ws
+
+
+End Sub
+
+

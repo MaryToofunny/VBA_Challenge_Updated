@@ -1,0 +1,59 @@
+Sub Bouns()
+
+
+
+For Each ws In Worksheets
+
+
+Dim lRow As Integer
+
+' setting headers for Max-Min Table
+
+ws.Range("O1").Value = "Ticker "
+ws.Range("P1").Value = "Value "
+ws.Range("N2").Value = "Greatest % Increase "
+ws.Range("N3").Value = "Greatest % Descrease "
+ws.Range("N4").Value = "Greatest Total Volume "
+ws.Range("N2").Columns.AutoFit
+ws.Range("N3").Columns.AutoFit
+ws.Range("N4").Columns.AutoFit
+
+'Counting last Row from 2nd Table
+
+
+lRow = ws.Cells(Rows.Count, 11).End(xlUp).Row
+
+ws.Range("P2").Value = WorksheetFunction.Max(ws.Range("K2:K" & lRow))
+ws.Range("P3").Value = WorksheetFunction.Min(ws.Range("K2:K" & lRow))
+ws.Range("P4").Value = WorksheetFunction.Max(ws.Range("L2:L" & lRow))
+ws.Range("P2").Columns.AutoFit
+ws.Range("P3").Columns.AutoFit
+ws.Range("P4").Columns.AutoFit
+ws.Range("P2").NumberFormat = "0.00%"
+ws.Range("P3").NumberFormat = "0.00%"
+
+'Finding Ticker for Max and Min Table
+
+Dim T As Integer
+
+For T = 2 To lRow
+
+If ws.Cells(T, 11).Value = ws.Range("P2").Value Then
+
+ws.Range("O2").Value = ws.Cells(T, 9).Value
+
+ElseIf ws.Cells(T, 11).Value = ws.Range("P3").Value Then
+ws.Range("O3").Value = ws.Cells(T, 9).Value
+
+ElseIf ws.Cells(T, 12).Value = ws.Range("P4").Value Then
+ws.Range("O4").Value = ws.Cells(T, 9).Value
+
+End If
+
+Next T
+
+Next ws
+
+
+End Sub
+
